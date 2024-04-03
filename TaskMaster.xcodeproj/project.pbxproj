@@ -33,6 +33,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		031B79742BBDF3300038299B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				03D04F482BBDED69009DC932 /* ContentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		031B79752BBDF3340038299B /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Data Model";
+			sourceTree = "<group>";
+		};
+		031B79762BBDF3390038299B /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Models";
+			sourceTree = "<group>";
+		};
 		03D04F3A2BBDED69009DC932 = {
 			isa = PBXGroup;
 			children = (
@@ -53,7 +75,9 @@
 			isa = PBXGroup;
 			children = (
 				03D04F462BBDED69009DC932 /* TaskMasterApp.swift */,
-				03D04F482BBDED69009DC932 /* ContentView.swift */,
+				031B79752BBDF3340038299B /* Data Model */,
+				031B79742BBDF3300038299B /* Views */,
+				031B79762BBDF3390038299B /* View Models */,
 				03D04F4A2BBDED6A009DC932 /* Assets.xcassets */,
 				03D04F4F2BBDED6A009DC932 /* TaskMaster.entitlements */,
 				03D04F4C2BBDED6A009DC932 /* Preview Content */,
