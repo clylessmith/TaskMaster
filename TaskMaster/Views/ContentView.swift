@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(TaskMasterViewModel.self) private var viewModel
+    
     var body: some View {
         HStack {
             VStack {
@@ -18,44 +20,44 @@ struct ContentView: View {
                 }
                 .frame(alignment: .leading)
                 .padding()
-                
-                Text("TODO: date label")
-                Text("Today's assignment list")
-                    .frame(minWidth: 150, maxWidth: .infinity, minHeight: 150, maxHeight: .infinity)
-                    .cornerRadius(8)
-
-                    .border(Color.gray)
-                    .padding()
-                
-                Text("All assignments table")
-                    //.frame(width: 450, height: 300, alignment: .center)
-                    .frame(minWidth: 150, maxWidth: .infinity, minHeight: 150, maxHeight: .infinity)
+            
+                CoursesView(viewModel: viewModel)
+                //.frame(width: 450, height: 300, alignment: .center)
+                    .frame(minWidth: 50, maxWidth: .infinity, maxHeight: .infinity)
                     .cornerRadius(8)
                     .border(Color.gray)
                     .padding()
-                HStack {
-                    Text("Fetch tasks button")
-                        .frame(width: 100, alignment: .bottomTrailing)
-                        .cornerRadius(8)
-                        .border(Color.gray)
-                        .padding()
-                    Text("Manual tasks button")
-                        .frame(width: 100, alignment: .bottomTrailing)
-                        .cornerRadius(8)
-                        .border(Color.gray)
-                        .padding()
-                }
             }
             .padding()
-            Text("Calendar")
-                .frame(minWidth: 300, maxWidth: .infinity, minHeight: 300, maxHeight: .infinity)
+            CalendarView()
+                .frame(minWidth: 100, maxWidth: .infinity, minHeight: 100, maxHeight: .infinity)
                 .cornerRadius(8)
                 .border(Color.gray)
                 .padding()
+            VStack {
+                
+                TodayAssignmentView(viewModel: viewModel)
+                    .frame(minWidth: 50, maxWidth: .infinity, maxHeight: .infinity)
+                    .cornerRadius(8)
+                
+                    .border(Color.gray)
+                    .padding()
+                Button("Refresh assignments") {
+                    Task {
+                        try? await viewModel.update()
+                        for course in viewModel.courses {
+                            print(course.courseName ?? "no name")
+                        }
+                    }
+                }
+                .padding()
+                
+                Text("Manual task")
+                    .padding()
             }
         }
         
-        
+    }
 }
 
 #Preview {

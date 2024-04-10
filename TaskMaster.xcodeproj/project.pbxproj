@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		031B79782BBDF43F0038299B /* TaskMasterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031B79772BBDF43F0038299B /* TaskMasterViewModel.swift */; };
+		031B797A2BBDF4760038299B /* TaskMasterDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031B79792BBDF4760038299B /* TaskMasterDataModel.swift */; };
+		031B797C2BBDF5540038299B /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031B797B2BBDF5540038299B /* Course.swift */; };
+		031B797E2BBDF6D80038299B /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031B797D2BBDF6D80038299B /* Assignment.swift */; };
+		031B79802BBDF7FF0038299B /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031B797F2BBDF7FF0038299B /* Quiz.swift */; };
+		03C223BF2BC4AF1000023D24 /* CoursesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C223BE2BC4AF1000023D24 /* CoursesView.swift */; };
+		03C223C12BC5D19900023D24 /* TodayAssignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C223C02BC5D19900023D24 /* TodayAssignmentView.swift */; };
+		03C223C32BC5D62F00023D24 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C223C22BC5D62F00023D24 /* CalendarView.swift */; };
+		03C223C52BC5D9B800023D24 /* CourseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C223C42BC5D9B800023D24 /* CourseDetailView.swift */; };
+		03C223C72BC5FACA00023D24 /* EditCourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C223C62BC5FACA00023D24 /* EditCourseView.swift */; };
 		03D04F472BBDED69009DC932 /* TaskMasterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D04F462BBDED69009DC932 /* TaskMasterApp.swift */; };
 		03D04F492BBDED69009DC932 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D04F482BBDED69009DC932 /* ContentView.swift */; };
 		03D04F4B2BBDED6A009DC932 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03D04F4A2BBDED6A009DC932 /* Assets.xcassets */; };
@@ -14,6 +24,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		031B79772BBDF43F0038299B /* TaskMasterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskMasterViewModel.swift; sourceTree = "<group>"; };
+		031B79792BBDF4760038299B /* TaskMasterDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskMasterDataModel.swift; sourceTree = "<group>"; };
+		031B797B2BBDF5540038299B /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
+		031B797D2BBDF6D80038299B /* Assignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment.swift; sourceTree = "<group>"; };
+		031B797F2BBDF7FF0038299B /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
+		03C223BE2BC4AF1000023D24 /* CoursesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursesView.swift; sourceTree = "<group>"; };
+		03C223C02BC5D19900023D24 /* TodayAssignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayAssignmentView.swift; sourceTree = "<group>"; };
+		03C223C22BC5D62F00023D24 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		03C223C42BC5D9B800023D24 /* CourseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailView.swift; sourceTree = "<group>"; };
+		03C223C62BC5FACA00023D24 /* EditCourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCourseView.swift; sourceTree = "<group>"; };
 		03D04F432BBDED69009DC932 /* TaskMaster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskMaster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03D04F462BBDED69009DC932 /* TaskMasterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskMasterApp.swift; sourceTree = "<group>"; };
 		03D04F482BBDED69009DC932 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -37,6 +57,11 @@
 			isa = PBXGroup;
 			children = (
 				03D04F482BBDED69009DC932 /* ContentView.swift */,
+				03C223BE2BC4AF1000023D24 /* CoursesView.swift */,
+				03C223C02BC5D19900023D24 /* TodayAssignmentView.swift */,
+				03C223C22BC5D62F00023D24 /* CalendarView.swift */,
+				03C223C42BC5D9B800023D24 /* CourseDetailView.swift */,
+				03C223C62BC5FACA00023D24 /* EditCourseView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -44,6 +69,10 @@
 		031B79752BBDF3340038299B /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
+				031B79792BBDF4760038299B /* TaskMasterDataModel.swift */,
+				031B797B2BBDF5540038299B /* Course.swift */,
+				031B797D2BBDF6D80038299B /* Assignment.swift */,
+				031B797F2BBDF7FF0038299B /* Quiz.swift */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -51,6 +80,7 @@
 		031B79762BBDF3390038299B /* View Models */ = {
 			isa = PBXGroup;
 			children = (
+				031B79772BBDF43F0038299B /* TaskMasterViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -163,8 +193,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03C223C32BC5D62F00023D24 /* CalendarView.swift in Sources */,
+				03C223C72BC5FACA00023D24 /* EditCourseView.swift in Sources */,
+				031B797E2BBDF6D80038299B /* Assignment.swift in Sources */,
 				03D04F492BBDED69009DC932 /* ContentView.swift in Sources */,
+				031B79802BBDF7FF0038299B /* Quiz.swift in Sources */,
+				03C223BF2BC4AF1000023D24 /* CoursesView.swift in Sources */,
 				03D04F472BBDED69009DC932 /* TaskMasterApp.swift in Sources */,
+				031B797C2BBDF5540038299B /* Course.swift in Sources */,
+				031B797A2BBDF4760038299B /* TaskMasterDataModel.swift in Sources */,
+				03C223C52BC5D9B800023D24 /* CourseDetailView.swift in Sources */,
+				031B79782BBDF43F0038299B /* TaskMasterViewModel.swift in Sources */,
+				03C223C12BC5D19900023D24 /* TodayAssignmentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
