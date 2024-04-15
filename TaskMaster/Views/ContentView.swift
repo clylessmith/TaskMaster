@@ -22,10 +22,9 @@ struct ContentView: View {
                 .padding()
             
                 CoursesView(viewModel: viewModel)
-                //.frame(width: 450, height: 300, alignment: .center)
                     .frame(minWidth: 50, maxWidth: .infinity, maxHeight: .infinity)
                     .cornerRadius(8)
-                    .border(Color.gray)
+                    //.border(Color.gray)
                     .padding()
             }
             .padding()
@@ -38,18 +37,27 @@ struct ContentView: View {
                     .frame(minWidth: 50, maxWidth: .infinity, maxHeight: .infinity)
                     .cornerRadius(8)
                 
-                    .border(Color.gray)
+                    //.border(Color.gray)
                     .padding()
-                Button("Refresh assignments") {
-                    Task {
-                        try? await viewModel.update()
-                    }
-                }
-                .padding()
+                
                 
 //                Text("Manual task")
 //                    .padding()
             }
+        }
+        .toolbar() {
+            ToolbarItem {
+                Button {
+                    Task {
+                        try? await viewModel.update()
+                    }
+                } label: {
+                    Image(systemName: "arrow.clockwise")
+                }
+                .help(Text("Refresh assignments"))
+                .padding()
+            }
+            
         }
         
     }

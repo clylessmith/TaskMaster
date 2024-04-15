@@ -19,6 +19,7 @@ struct TodayAssignmentView: View {
             else {
                 Text(viewModel.date)
                     .italic()
+                    .font(.title3)
                     .padding()
                 if viewModel.todayAssign.values.allSatisfy({$0 == []}) {
                     List {
@@ -49,6 +50,10 @@ struct TodayAssignmentView: View {
                                                 viewModel.markComplete(assign: assign)
                                             }
                                             .padding()
+                                    }
+                                } .onTapGesture {
+                                    if let assign = selectedAssignment {
+                                        viewModel.markComplete(assign: assign)
                                     }
                                 }
                                 

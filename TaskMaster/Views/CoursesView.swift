@@ -18,18 +18,27 @@ struct CoursesView: View {
                 CourseDetailView(viewModel: viewModel, course: $selectedCourse)
                 
             } else {
-                Text("Courses")
-                    .fontWeight(.bold)
-                    .padding()
+                HStack {
+                    Text("Courses")
+                        .fontWeight(.bold)
+                        .padding()
+                        .frame(alignment: .leading)
+                    Spacer()
+                    Button {
+                        showHiddenCourses = !showHiddenCourses
+                    } label: {
+                        showHiddenCourses ? Image(systemName: "eye") : Image(systemName: "eye.slash")
+                    } .help(Text("\(showHiddenCourses ? "Hide" : "Show") hidden"))
+                    .frame(alignment: .trailing)
+                }
+                
                 List(showHiddenCourses ? viewModel.courses : viewModel.courses.filter({$0.hidden == false}), id: \.self, selection: $selectedCourse) {course in
                     Text(course.courseName ?? "No name")
                         .padding()
                         .background(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)).fill(course.color))
                         
                 }
-                Button("\(showHiddenCourses ? "Hide" : "Show") hidden") {
-                    showHiddenCourses = !showHiddenCourses
-                }
+                
             }
         }
         

@@ -79,7 +79,7 @@ extension Assignment: Decodable {
 //        }
         
         let dateString = try values.decodeIfPresent(String.self, forKey: .dueDate) ?? nil
-        print("Assign: \(self.assignName ?? ""), due date: \(dateString ?? "")")
+        //print("Assign: \(self.assignName ?? ""), due date: \(dateString ?? "")")
         dateFormatter.dateFormat = dateFormat
         dateFormatter.timeZone = .current
         self.dueDate = dateFormatter.date(from: dateString ?? "")

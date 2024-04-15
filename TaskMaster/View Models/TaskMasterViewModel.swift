@@ -19,7 +19,7 @@ class TaskMasterViewModel {
     var date: String
     var dateFormatter:DateFormatter
     
-    private var testToken: String = "9802~hn0bPZZsSacQ1IclF8FCTodGFHXY4tg1CgS5f8j6TaZgshyNkJ2Ryudp7lMXctsC"
+    private var testToken: String
     private var apiURL: String = "https://canvas.instructure.com/api/v1/"
     private var dateFormat: String = "MMMM.dd.yyyy"
     
@@ -31,18 +31,16 @@ class TaskMasterViewModel {
         self.todayAssign = [ : ]
         self.todayAssignArray = []
         self.date = ""
+        self.testToken = ProcessInfo.processInfo.environment["CANVAS_TOKEN"] ?? ""
         self.dateFormat = dateFormat
         dateFormatter.dateFormat = dateFormat
         self.date = dateFormatter.string(from: Date())
-        self.testToken = testToken
         self.apiURL = apiURL
         
     }
     
     // MARK: source = https://www.swiftwithvincent.com/blog/how-to-write-your-first-api-call-in-swift
     func fetchCourses() async throws {
-        // TODO: use URLSession to get data, decode with JSONDecoder()
-        // Use swift -> JSON decoding look online
         let url = URL(string: "\(apiURL)courses?access_token=\(testToken)&per_page=1000")!
         
         print(url)
@@ -64,9 +62,7 @@ class TaskMasterViewModel {
     }
     
     func fetchAssignments(course:Course) async throws {
-        // TODO: use URLSession to get data, decode with JSONDecoder()
-        // Use swift -> JSON decoding look online
-        
+    
         let url = URL(string: "\(apiURL)courses/\(course.courseID)/assignments?access_token=\(testToken)&per_page=1000")!
         
         print("Sending request to: \(url)")
@@ -131,8 +127,9 @@ class TaskMasterViewModel {
             if let courseId = assignments.keys.first(where: {$0 == targetCourse.id}) {
                 if var newAssign = assignments[courseId]?.first(where: {$0.id == assign.id}) {
                     newAssign.isComplete = !(assign.isComplete ?? false)
-                    if var localAssign = assignments[courseId] {
+                    if let localAssign = assignments[courseId] {
                         assignments[courseId] = localAssign.map{$0.id == assign.id ? newAssign : $0}
+                        print("RESET - new assign is \(assignments[courseId]?.first(where: {$0.id == assign.id})?.isComplete ?? false ? "complete" : "not complete")")
                     }
                 }
             }
