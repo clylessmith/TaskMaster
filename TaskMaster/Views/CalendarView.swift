@@ -8,11 +8,21 @@
 import SwiftUI
 
 struct CalendarView: View {
+    @State var date = Date()
+    
+    
     var body: some View {
-        Text("Calendar")
+        // store selected date, update the right-hand menu with current date's assignments
+        DatePicker(
+                "",
+                selection: $date,
+                displayedComponents: [.date]
+            )
+            .datePickerStyle(.graphical)
+            .frame(minWidth: 300, maxWidth: 300)
     }
 }
 
-#Preview {
-    CalendarView()
-}
+//#Preview {
+//    CalendarView()
+//}

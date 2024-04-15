@@ -30,9 +30,8 @@ struct ContentView: View {
             }
             .padding()
             CalendarView()
-                .frame(minWidth: 100, maxWidth: .infinity, minHeight: 100, maxHeight: .infinity)
+                .frame(minWidth: 300, maxWidth: .infinity, minHeight: 300, maxHeight: .infinity)
                 .cornerRadius(8)
-                .border(Color.gray)
                 .padding()
             VStack {
                 
@@ -45,15 +44,12 @@ struct ContentView: View {
                 Button("Refresh assignments") {
                     Task {
                         try? await viewModel.update()
-                        for course in viewModel.courses {
-                            print(course.courseName ?? "no name")
-                        }
                     }
                 }
                 .padding()
                 
-                Text("Manual task")
-                    .padding()
+//                Text("Manual task")
+//                    .padding()
             }
         }
         

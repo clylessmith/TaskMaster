@@ -14,7 +14,8 @@ class TaskMasterViewModel {
     var courses: [Course]
     var selectedCourse: Course?
     var assignments: [Course.ID : [Assignment]]
-    var todayAssign: [Course.ID: [Assignment]]
+    var todayAssign: [Course.ID : [Assignment]]
+    var todayAssignArray: [Assignment]
     var date: String
     var dateFormatter:DateFormatter
     
@@ -28,6 +29,7 @@ class TaskMasterViewModel {
         self.selectedCourse = nil
         self.assignments = [ : ]
         self.todayAssign = [ : ]
+        self.todayAssignArray = []
         self.date = ""
         self.dateFormat = dateFormat
         dateFormatter.dateFormat = dateFormat
@@ -41,7 +43,7 @@ class TaskMasterViewModel {
     func fetchCourses() async throws {
         // TODO: use URLSession to get data, decode with JSONDecoder()
         // Use swift -> JSON decoding look online
-        let url = URL(string: "\(apiURL)courses?access_token=\(testToken)")!
+        let url = URL(string: "\(apiURL)courses?access_token=\(testToken)&per_page=1000")!
         
         print(url)
         
@@ -53,39 +55,45 @@ class TaskMasterViewModel {
         for course in localCourses {
             if !courses.contains(course) && course.courseName != nil {
                 courses.append(course)
-                print("INSERTED COURSE: \(course.courseName ?? course.originalName ?? "no name found")")
-                print("COURSE ENDS AT: \(String(describing: course.endDate))")
+//                print("INSERTED COURSE: \(course.courseName ?? course.originalName ?? "no name found")")
+//                print("COURSE ENDS AT: \(String(describing: course.endDate))")
                 assignments[course.id] = []
                 todayAssign[course.id] = []
             }
         }
     }
     
-    func fetchAssignments() async throws {
+    func fetchAssignments(course:Course) async throws {
         // TODO: use URLSession to get data, decode with JSONDecoder()
         // Use swift -> JSON decoding look online
-        for course in courses {
-            if course.courseName == nil {
-                continue
+        
+        let url = URL(string: "\(apiURL)courses/\(course.courseID)/assignments?access_token=\(testToken)&per_page=1000")!
+        
+        print("Sending request to: \(url)")
+//        print("ASSIGNMENTS FOR \(course.courseName ?? "Empty name")")
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        let localAssign: [Assignment] = try JSONDecoder().decode([Assignment].self, from: data)
+        
+        // check course IDs against existing, insert if DNE
+        for assign in localAssign {
+           if ((assignments[course.id]?.first(where: {$0.assignID == assign.assignID})) == nil) {
+                assignments[course.id]?.append(assign)
+               if ((todayAssign[course.id]?.first(where: {$0.assignID == assign.assignID})) == nil) {
+                   if let assignDate = assign.dueDate {
+                       if dateFormatter.string(from: assignDate) == dateFormatter.string(from: Date()) {
+                           todayAssign[course.id]?.append(assign)
+                           todayAssignArray.append(assign)
+                       }
+                   }
+                   
+               }
+//                print("INSERTED ASSIGNMENT: \(String(describing: assignments[course.id]?.last?.assignName))) for course: \(String(describing: course.courseName))")
             }
-            let url = URL(string: "\(apiURL)courses/\(course.courseID)/assignments?access_token=\(testToken)")!
             
-            print("Sending request to: \(url)")
-            print("ASSIGNMENTS FOR \(course.courseName ?? "Empty name")")
-            
-            let (data, _) = try await URLSession.shared.data(from: url)
-            
-            let localAssign: [Assignment] = try JSONDecoder().decode([Assignment].self, from: data)
-            
-            // check course IDs against existing, insert if DNE
-            for assign in localAssign {
-               if ((assignments[course.id]?.first(where: {$0.assignID == assign.assignID})) == nil) {
-                    assignments[course.id]?.append(assign)
-                    print("INSERTED ASSIGNMENT: \(String(describing: assignments[course.id]?.last?.assignName))) for course: \(String(describing: course.courseName))")
-                }
-                
-            }
         }
+        
     }
     
     func updateCourseHidden(course: Course?) {
@@ -95,8 +103,8 @@ class TaskMasterViewModel {
                 newCourse.hidden = !newCourse.hidden
                 courses = courses.map{$0.id == localCourse.id ? newCourse : $0}
             }
-            print("Course: \(String(describing: courses.first(where: {$0.id == localCourse.id})?.courseName))")
-            print("HIDDEN: \(String(describing: courses.first(where: {$0.id == localCourse.id})?.hidden))")
+//            print("Course: \(String(describing: courses.first(where: {$0.id == localCourse.id})?.courseName))")
+//            print("HIDDEN: \(String(describing: courses.first(where: {$0.id == localCourse.id})?.hidden))")
         }
     }
     
@@ -104,22 +112,36 @@ class TaskMasterViewModel {
         
     }
     
-    func updateTodayAssign() {
-        for course in assignments.keys {
-            for assign in assignments[course] ?? [] {
-                if ((todayAssign[course]?.first(where: {$0.assignID == assign.assignID})) == nil) {
-                    if let assignDate = assign.dueDate {
-                        if dateFormatter.string(from: assignDate) == dateFormatter.string(from: Date()) {
-                            todayAssign[course]?.append(assign)
-                        }
+    func updateTodayAssign(course:Course) {
+        for assign in assignments[course.id] ?? [] {
+            if ((todayAssign[course.id]?.first(where: {$0.assignID == assign.assignID})) == nil) {
+                if let assignDate = assign.dueDate {
+                    if dateFormatter.string(from: assignDate) == dateFormatter.string(from: Date()) {
+                        todayAssign[course.id]?.append(assign)
                     }
-                    
+                }
+                
+            }
+        }
+        
+    }
+    
+    func markComplete(assign: Assignment) {
+        if let targetCourse = courses.first(where: {$0.courseID == assign.courseID}) {
+            if let courseId = assignments.keys.first(where: {$0 == targetCourse.id}) {
+                if var newAssign = assignments[courseId]?.first(where: {$0.id == assign.id}) {
+                    newAssign.isComplete = !(assign.isComplete ?? false)
+                    if var localAssign = assignments[courseId] {
+                        assignments[courseId] = localAssign.map{$0.id == assign.id ? newAssign : $0}
+                    }
                 }
             }
         }
     }
     
     func update() async throws {
+        date = dateFormatter.string(from: Date())
+        
         do {
             try await fetchCourses()
         }
@@ -127,13 +149,25 @@ class TaskMasterViewModel {
             print("ERROR - fetching courses: \(error)")
         }
         
-        do {
-            try await fetchAssignments()
+        for course in courses {
+            if course.courseName == nil {
+                continue
+            }
+            do {
+                try await fetchAssignments(course: course)
+                //updateTodayAssign(course: course)
+            }
+            catch {
+                print("ERROR - fetching assignments: \(error)")
+            }
+            
         }
-        catch {
-            print("ERROR - fetching assignments: \(error)")
+        
+        print("TODAYS ASSIGNMENTS")
+        for course in todayAssign.keys {
+            for assign in todayAssign[course] ?? [] {
+                print("TODAY: \(String(describing: assign.assignName))")
+            }
         }
-        date = dateFormatter.string(from: Date())
-        updateTodayAssign()
     }
 }

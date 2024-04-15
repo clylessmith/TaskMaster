@@ -11,48 +11,58 @@ struct CourseDetailView: View {
     @State var viewModel: TaskMasterViewModel
     @Binding var course:Course?
     @State var showEdit:Bool = false
+    @State var selectedAssignment: Assignment?
 
     var body: some View {
         VStack {
-            HStack(alignment: .top) {
-                Button {
-                    course = nil
-                } label: {
-                    Image(systemName: "chevron.left")
+            if let _ = selectedAssignment {
+                AssignmentDetailView(viewModel: viewModel, assignment: $selectedAssignment)
+            } else {
+                HStack(alignment: .top) {
+                    Button {
+                        course = nil
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+                    .frame(alignment: .leading)
+                    Text((viewModel.courses.first(where: {$0.id == course?.id}) ?? nil)?.courseName ?? "Current course")
+                    Button {
+                        showEdit = !showEdit
+                    } label: {
+                        Image(systemName: "pencil")
+                    }
+                    .frame(alignment: .trailing)
+                    .padding()
                 }
-                .frame(alignment: .leading)
-                Text((viewModel.courses.first(where: {$0.id == course?.id}) ?? nil)?.courseName ?? "Current course")
-                Button {
-                    showEdit = !showEdit
-                } label: {
-                    Image(systemName: "pencil")
-                }
-                .frame(alignment: .trailing)
                 .padding()
-            }
-            .padding()
-            
-            if showEdit {
-                if let _ = course {
-                    EditCourseView(viewModel: viewModel, course: course)
-                }
-            }
-            
-            if let existCourse = course {
-                if let assignments = viewModel.assignments[existCourse.id] {
-                    List(assignments) { assign in
-                        Text("\(assign.assignName ?? "no name")")
-                        Text("DUE \(viewModel.dateFormatter.string(from: assign.dueDate ?? Date()))")
-                            .padding(.leading)
-                    }
-                } else {
-                    List() {
-                        Text("No assignments found")
+                
+                if showEdit {
+                    if let _ = course {
+                        EditCourseView(viewModel: viewModel, course: course)
                     }
                 }
+                
+                if let existCourse = course {
+                    if let assignments = viewModel.assignments[existCourse.id] {
+                        List(assignments,id: \.self ,selection: $selectedAssignment) { assign in
+                            Text("\(assign.assignName ?? "no name")")
+                            if let dueDate = assign.dueDate {
+                                Text("DUE \(viewModel.dateFormatter.string(from: dueDate))")
+                                    .padding(.leading)
+                            }
+                            else {
+                                Text("NO DUE DATE")
+                                    .padding(.leading)
+                            }
+                            
+                        }
+                    } else {
+                        List() {
+                            Text("No assignments found")
+                        }
+                    }
+                }
             }
-            
-            
         }
     }
 }

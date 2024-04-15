@@ -17,6 +17,7 @@
 		03C223C32BC5D62F00023D24 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C223C22BC5D62F00023D24 /* CalendarView.swift */; };
 		03C223C52BC5D9B800023D24 /* CourseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C223C42BC5D9B800023D24 /* CourseDetailView.swift */; };
 		03C223C72BC5FACA00023D24 /* EditCourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C223C62BC5FACA00023D24 /* EditCourseView.swift */; };
+		03C223C92BC6597C00023D24 /* AssignmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C223C82BC6597C00023D24 /* AssignmentDetailView.swift */; };
 		03D04F472BBDED69009DC932 /* TaskMasterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D04F462BBDED69009DC932 /* TaskMasterApp.swift */; };
 		03D04F492BBDED69009DC932 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D04F482BBDED69009DC932 /* ContentView.swift */; };
 		03D04F4B2BBDED6A009DC932 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03D04F4A2BBDED6A009DC932 /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 		03C223C22BC5D62F00023D24 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		03C223C42BC5D9B800023D24 /* CourseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailView.swift; sourceTree = "<group>"; };
 		03C223C62BC5FACA00023D24 /* EditCourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCourseView.swift; sourceTree = "<group>"; };
+		03C223C82BC6597C00023D24 /* AssignmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentDetailView.swift; sourceTree = "<group>"; };
 		03D04F432BBDED69009DC932 /* TaskMaster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskMaster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03D04F462BBDED69009DC932 /* TaskMasterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskMasterApp.swift; sourceTree = "<group>"; };
 		03D04F482BBDED69009DC932 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 				03C223C22BC5D62F00023D24 /* CalendarView.swift */,
 				03C223C42BC5D9B800023D24 /* CourseDetailView.swift */,
 				03C223C62BC5FACA00023D24 /* EditCourseView.swift */,
+				03C223C82BC6597C00023D24 /* AssignmentDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -85,6 +88,13 @@
 			path = "View Models";
 			sourceTree = "<group>";
 		};
+		03C223CA2BC6FA0100023D24 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		03D04F3A2BBDED69009DC932 = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				03D04F462BBDED69009DC932 /* TaskMasterApp.swift */,
+				03C223CA2BC6FA0100023D24 /* Controllers */,
 				031B79752BBDF3340038299B /* Data Model */,
 				031B79742BBDF3300038299B /* Views */,
 				031B79762BBDF3390038299B /* View Models */,
@@ -202,6 +213,7 @@
 				03D04F472BBDED69009DC932 /* TaskMasterApp.swift in Sources */,
 				031B797C2BBDF5540038299B /* Course.swift in Sources */,
 				031B797A2BBDF4760038299B /* TaskMasterDataModel.swift in Sources */,
+				03C223C92BC6597C00023D24 /* AssignmentDetailView.swift in Sources */,
 				03C223C52BC5D9B800023D24 /* CourseDetailView.swift in Sources */,
 				031B79782BBDF43F0038299B /* TaskMasterViewModel.swift in Sources */,
 				03C223C12BC5D19900023D24 /* TodayAssignmentView.swift in Sources */,
@@ -334,6 +346,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = TaskMaster/TaskMaster.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -361,6 +374,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = TaskMaster/TaskMaster.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;

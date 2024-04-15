@@ -24,8 +24,9 @@ struct Course: Identifiable {
     var hidden: Bool
         
     let dateFormatter = DateFormatter()
-    private var dateFormat = "YYYY-MM-DD'T'HH:mm:ss'Z'"
+    private var dateFormat = "YYYY-MM-dd'T'HH:mm:ss'Z'"
     //"2022-10-05T06:00:00Z"
+    
     
     init(courseID: Int, name: String, courseCode: String, originalName: String? = nil) {
         self.id = UUID()
@@ -51,8 +52,15 @@ extension Course: Decodable {
         dateFormatter.dateFormat = dateFormat
         self.endDate = dateFormatter.date(from: dateString ?? "")
         
+        
+        if self.endDate ?? Date() < Date() {
+            self.hidden = true
+        }
+        else {
+            self.hidden = false
+        }
+        
         self.color = Color.gray
-        self.hidden = false
     }
     
     enum CodingKeys: String, CodingKey {

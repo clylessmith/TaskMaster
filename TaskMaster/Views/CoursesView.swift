@@ -20,6 +20,7 @@ struct CoursesView: View {
             } else {
                 Text("Courses")
                     .fontWeight(.bold)
+                    .padding()
                 List(showHiddenCourses ? viewModel.courses : viewModel.courses.filter({$0.hidden == false}), id: \.self, selection: $selectedCourse) {course in
                     Text(course.courseName ?? "No name")
                         .padding()
