@@ -30,9 +30,8 @@ struct ContentView: View {
             }
             .padding()
             CalendarView()
-                .frame(minWidth: 300, maxWidth: .infinity, minHeight: 300, maxHeight: .infinity)
+                .frame(minWidth: 200, maxWidth: .infinity, minHeight: 200, maxHeight: .infinity)
                 .cornerRadius(8)
-                .padding()
             VStack {
                 
                 TodayAssignmentView(viewModel: viewModel)

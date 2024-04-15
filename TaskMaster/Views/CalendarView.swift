@@ -19,7 +19,8 @@ struct CalendarView: View {
                 displayedComponents: [.date]
             )
             .datePickerStyle(.graphical)
-            .frame(minWidth: 300, maxWidth: 300)
+            .transformEffect(.init(scaleX: 1.75 , y: 1.75))
+            .padding()
     }
 }
 
