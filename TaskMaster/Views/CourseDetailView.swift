@@ -46,13 +46,16 @@ struct CourseDetailView: View {
                     if let assignments = viewModel.assignments[existCourse.id] {
                         List(assignments,id: \.self ,selection: $selectedAssignment) { assign in
                             Text("\(assign.assignName ?? "no name")")
+                                .strikethrough(assign.isComplete ?? false)
                             if let dueDate = assign.dueDate {
                                 Text("DUE \(viewModel.dateFormatter.string(from: dueDate))")
                                     .padding(.leading)
+                                    .strikethrough(assign.isComplete ?? false)
                             }
                             else {
                                 Text("NO DUE DATE")
                                     .padding(.leading)
+                                    .strikethrough(assign.isComplete ?? false)
                             }
                             
                         }

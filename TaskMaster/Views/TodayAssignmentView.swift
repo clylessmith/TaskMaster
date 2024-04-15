@@ -34,23 +34,16 @@ struct TodayAssignmentView: View {
                         if viewModel.todayAssign[course] != [] {
                             Text(viewModel.courses.first(where: {$0.id == course})?.courseName ?? "Name could not be found")
                                 .bold()
+                            // MARK: problem - assignment does not update
                             ForEach( viewModel.todayAssign[course] ?? [], id: \.self) {assign in
                                 HStack {
-                                    if assign.isComplete ?? false {
-                                        Text("\(assign.assignName ?? "no name") \n DUE \(assign.timeDue)")
-                                            .strikethrough()
-                                            .onTapGesture {
-                                                viewModel.markComplete(assign: assign)
-                                            }
-                                            .padding()
-                                    }
-                                    else {
-                                        Text("\(assign.assignName ?? "no name") \n DUE \(assign.timeDue)")
-                                            .onTapGesture {
-                                                viewModel.markComplete(assign: assign)
-                                            }
-                                            .padding()
-                                    }
+                                    Text("\(assign.assignName ?? "no name") \n DUE \(assign.timeDue)")
+                                        .strikethrough(assign.isComplete ?? false)
+                                        .onTapGesture {
+                                            viewModel.markComplete(assign: assign)
+                                        }
+                                        .padding()
+                                    
                                 } .onTapGesture {
                                     if let assign = selectedAssignment {
                                         viewModel.markComplete(assign: assign)

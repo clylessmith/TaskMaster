@@ -37,6 +37,10 @@ class TaskMasterViewModel {
         self.date = dateFormatter.string(from: Date())
         self.apiURL = apiURL
         
+        Task {
+            try? await update()
+        }
+        
     }
     
     // MARK: source = https://www.swiftwithvincent.com/blog/how-to-write-your-first-api-call-in-swift
@@ -125,11 +129,13 @@ class TaskMasterViewModel {
     func markComplete(assign: Assignment) {
         if let targetCourse = courses.first(where: {$0.courseID == assign.courseID}) {
             if let courseId = assignments.keys.first(where: {$0 == targetCourse.id}) {
-                if var newAssign = assignments[courseId]?.first(where: {$0.id == assign.id}) {
+                if var newAssign = assignments[courseId]?.first(where: {$0 == assign}) {
                     newAssign.isComplete = !(assign.isComplete ?? false)
                     if let localAssign = assignments[courseId] {
-                        assignments[courseId] = localAssign.map{$0.id == assign.id ? newAssign : $0}
-                        print("RESET - new assign is \(assignments[courseId]?.first(where: {$0.id == assign.id})?.isComplete ?? false ? "complete" : "not complete")")
+                        assignments.updateValue(localAssign.map{$0 == assign ? newAssign : $0}, forKey: courseId)
+                    }
+                    if let localTodayAssign = todayAssign[courseId] {
+                        todayAssign.updateValue(localTodayAssign.map{$0 == assign ? newAssign : $0}, forKey: courseId)
                     }
                 }
             }

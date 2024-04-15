@@ -27,7 +27,7 @@ struct CoursesView: View {
                     Button {
                         showHiddenCourses = !showHiddenCourses
                     } label: {
-                        showHiddenCourses ? Image(systemName: "eye") : Image(systemName: "eye.slash")
+                        showHiddenCourses ? Image(systemName: "eye.slash") : Image(systemName: "eye")
                     } .help(Text("\(showHiddenCourses ? "Hide" : "Show") hidden"))
                     .frame(alignment: .trailing)
                 }
