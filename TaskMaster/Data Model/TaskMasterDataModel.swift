@@ -114,7 +114,7 @@ class TaskMasterDataModel {
                     } else {
                         assignments[thisCourse.id]?.append(assignment)
                     }
-                    updateTodayAssign(course: thisCourse)
+                    updateTodayAssign(course: thisCourse, targetDate: Date())
                     updateAssignmentsByDate(assignment: assignment)
                 }
             }
@@ -160,7 +160,7 @@ class TaskMasterDataModel {
                 if ((courseAssigns.first(where: {$0.assignId == assign.assignId})) == nil) {
                     assignments[course.id]?.append(assign)
                     modelContext.insert(assign)
-                    updateTodayAssign(course: course)
+                    updateTodayAssign(course: course, targetDate: Date())
                     updateAssignmentsByDate(assignment: assign)
                 }
 
@@ -182,12 +182,12 @@ class TaskMasterDataModel {
     //
     //    }
     
-    func updateTodayAssign(course:Course) {
+    func updateTodayAssign(course:Course, targetDate: Date) {
         for assign in assignments[course.id] ?? [] {
             if let courseAssign = todayAssign[course.id] {
                 if ((courseAssign.first(where: {$0.assignId == assign.assignId})) == nil) {
                     if let assignDate = assign.dueDate {
-                        if dateFormatter.string(from: assignDate) == dateFormatter.string(from: Date()) {
+                        if dateFormatter.string(from: assignDate) == dateFormatter.string(from: targetDate) {
                             todayAssign[course.id]?.append(assign)
                         }
                     }
@@ -256,7 +256,7 @@ class TaskMasterDataModel {
         self.date = dateFormatter.string(from: date)
         for course in courses {
             todayAssign[course.id] = []
-            updateTodayAssign(course: course)
+            updateTodayAssign(course: course, targetDate: date)
         }
     }
     
@@ -299,7 +299,7 @@ class TaskMasterDataModel {
             }
             do {
                 try await fetchAssignments(course: course)
-                updateTodayAssign(course: course)
+                updateTodayAssign(course: course, targetDate: selectedDate ?? Date())
             }
             catch {
                 print("ERROR - fetching assignments: \(error)")
