@@ -39,7 +39,7 @@ struct TodayAssignmentView: View {
                             // MARK: problem - assignment does not update
                             ForEach( appController.dataModel.todayAssign[course] ?? [], id: \.self) {assign in
                                 HStack {
-                                    Text("\(assign.assignName ?? "no name") \n DUE \(assign.timeDue)")
+                                    Text("\(assign.assignName ?? "no name") \n DUE \(assign.timeDue ?? "no due time")")
                                         .strikethrough(assign.isComplete ?? false)
                                         .onTapGesture {
                                             appController.dataModel.markComplete(assign: assign)

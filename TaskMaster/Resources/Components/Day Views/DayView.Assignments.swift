@@ -13,6 +13,7 @@ extension DV { struct Assignments: DayView {
     let isCurrentMonth: Bool
     let selectedDate: Binding<Date?>?
     let selectedRange: Binding<MijickCalendarView.MDateRange?>?
+    let color: Color?
     @State var dataModel: TaskMasterDataModel
 }}
 
@@ -29,7 +30,7 @@ extension DV.Assignments {
             .frame(maxWidth: .infinity)
             .padding(.top, 16)
             .padding(.bottom, 16)
-            .border(.backgroundTertiary, width: 1)
+            .border(color ?? .grayAccent)
             .background(isPast() ? .backgroundTertiary.opacity(0.6) : .clear)
             .erased()
     }
@@ -60,6 +61,25 @@ private extension DV.Assignments {
         Text("\(dataModel.findAssignmentsByDay(calendarDate: date)) tasks")
             .font(.regular(12))
             .foregroundStyle(.onBackgroundSecondary)
+    }
+}
+
+private extension DV.Assignments {
+    func getTextColor() -> Color {
+        guard !isPast() else { return .onBackgroundSecondary }
+        
+        switch isSelected() {
+            case true: return color == nil ? .onBackgroundPrimary : .white
+            case false: return color == nil ? .onBackgroundPrimary : .white
+        }
+    }
+    func getBackgroundColor() -> Color {
+        guard !isPast() else { return .backgroundSecondary }
+
+        switch isSelected() {
+            case true: return color ?? .backgroundPrimary
+            case false: return color ?? .backgroundPrimary
+        }
     }
 }
 

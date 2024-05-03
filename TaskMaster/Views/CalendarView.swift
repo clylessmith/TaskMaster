@@ -30,26 +30,30 @@ private extension CalendarView {
             .monthsTopPadding(36)
             .dayView(buildDayView)
             .monthLabel { ML.Leading(month: $0, horizontalPadding: 0) }
-            //.onMonthChange(viewModel.endMonth.send)
     }
 }
 
 private extension CalendarView {
     func buildDayView(_ date: Date, _ isCurrentMonth: Bool, selectedDate: Binding<Date?>?, range: Binding<MDateRange?>?) -> DV.Assignments {
-        return .init(date: date, isCurrentMonth: isCurrentMonth, selectedDate: $selectionManager.selectedDate, selectedRange: $selectedRange, dataModel: dataModel)
+        return .init(date: date, isCurrentMonth: isCurrentMonth, selectedDate: $selectionManager.selectedDate, selectedRange: $selectedRange, color: getDateColor(date), dataModel: dataModel)
     }
 }
 private extension CalendarView {
     func onContinueButtonTap() { }
     func getDateColor(_ date: Date) -> Color? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d"
-        
-        let day = Int(dateFormatter.string(from: date)) ?? 0
-        if day % 5 == 0 { return .redAccent }
-        if day % 9 == 0 { return .orangeAccent }
-        if day % 11 == 0  { return .greenAccent }
-        return nil
+        let assignAmount = dataModel.findAssignmentsByDay(calendarDate: date)
+        switch assignAmount {
+        case 0:
+            return .greenAccent
+        case 1:
+            return .yellow
+        case 2:
+            return .orangeAccent
+        case _ where assignAmount >= 3:
+            return .redAccent
+        default:
+            return nil
+        }
     }
 }
 

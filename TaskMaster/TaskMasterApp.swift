@@ -18,5 +18,10 @@ struct TaskMasterApp: App {
                 .environment(appController)
                 
         }
+        
+        Settings {
+            PreferencesView()
+        }
+        .environment(appController)
     }
 }

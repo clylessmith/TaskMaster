@@ -17,48 +17,57 @@ struct CoursesView: View {
     
     var body: some View {
         /*
-        VStack {
-//            if let _ = selectedCourse {
-//                CourseDetailView(viewModel: viewModel, course: $selectedCourse)
-//                
-//            } else {
-//                HStack {
-//                    Text("Courses")
-//                        .fontWeight(.bold)
-//                        .padding()
-//                        .frame(alignment: .leading)
-//                    Spacer()
-//                    Button {
-//                        showHiddenCourses = !showHiddenCourses
-//                    } label: {
-//                        showHiddenCourses ? Image(systemName: "eye.slash") : Image(systemName: "eye")
-//                    } .help(Text("\(showHiddenCourses ? "Hide" : "Show") hidden"))
-//                    .frame(alignment: .trailing)
-//                }
-                NavigationSplitView() {
-                    List(showHiddenCourses ? viewModel.courses : viewModel.courses.filter({$0.hidden == false}), id: \.self, selection: $selectedCourse) {course in
-                        Text(course.courseName ?? "No name")
-                            .padding()
-                            .background(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)).fill(course.color))
-                            
-                    }
-                } detail: {
-                    CourseDetailView(viewModel: viewModel, course: $selectedCourse)
-                }
-                
-                
-            //}
-        }
+         VStack {
+         //            if let _ = selectedCourse {
+         //                CourseDetailView(viewModel: viewModel, course: $selectedCourse)
+         //
+         //            } else {
+         //                HStack {
+         //                    Text("Courses")
+         //                        .fontWeight(.bold)
+         //                        .padding()
+         //                        .frame(alignment: .leading)
+         //                    Spacer()
+         //                    Button {
+         //                        showHiddenCourses = !showHiddenCourses
+         //                    } label: {
+         //                        showHiddenCourses ? Image(systemName: "eye.slash") : Image(systemName: "eye")
+         //                    } .help(Text("\(showHiddenCourses ? "Hide" : "Show") hidden"))
+         //                    .frame(alignment: .trailing)
+         //                }
+         NavigationSplitView() {
+         List(showHiddenCourses ? viewModel.courses : viewModel.courses.filter({$0.hidden == false}), id: \.self, selection: $selectedCourse) {course in
+         Text(course.courseName ?? "No name")
+         .padding()
+         .background(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)).fill(course.color))
+         
+         }
+         } detail: {
+         CourseDetailView(viewModel: viewModel, course: $selectedCourse)
+         }
+         
+         
+         //}
+         }
          */
+        HStack {
+            Text("\(showHiddenCourses ? "Hide" : "Show") hidden")
+            Button {
+                showHiddenCourses = !showHiddenCourses
+            } label: {
+                showHiddenCourses ? Image(systemName: "eye.slash") : Image(systemName: "eye")
+            } .help(Text("\(showHiddenCourses ? "Hide" : "Show") hidden"))
+                .frame(alignment: .trailing)
+        }
         
+        Divider()
         List(showHiddenCourses ? dataModel.courses : dataModel.courses.filter({$0.hidden == false}),
              id: \.self,
              selection: $selectionManager.selectedCourse) {course in
             Text(course.courseName ?? "No name")
                 .padding()
                 .background(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)).fill(Color.gray))
-                
-                
+            
         }
     }
 }

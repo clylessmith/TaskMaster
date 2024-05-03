@@ -14,6 +14,7 @@
 		031B79802BBDF7FF0038299B /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031B797F2BBDF7FF0038299B /* Quiz.swift */; };
 		0328B3E42BE53A79005E1DFE /* DayView.Assignments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0328B3E32BE53A79005E1DFE /* DayView.Assignments.swift */; };
 		0328B3E62BE55342005E1DFE /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0328B3E52BE55342005E1DFE /* WebView.swift */; };
+		0328B3EA2BE59B3A005E1DFE /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0328B3E92BE59B3A005E1DFE /* PreferencesView.swift */; };
 		032E3B2F2BD9BEF40084FF4C /* SelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032E3B2E2BD9BEF40084FF4C /* SelectionManager.swift */; };
 		032E3B312BD9BFEE0084FF4C /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032E3B302BD9BFEE0084FF4C /* AppController.swift */; };
 		032E3B342BDC18E80084FF4C /* MijickCalendarView in Frameworks */ = {isa = PBXBuildFile; productRef = 032E3B332BDC18E80084FF4C /* MijickCalendarView */; };
@@ -63,6 +64,7 @@
 		031B797F2BBDF7FF0038299B /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
 		0328B3E32BE53A79005E1DFE /* DayView.Assignments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayView.Assignments.swift; sourceTree = "<group>"; };
 		0328B3E52BE55342005E1DFE /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		0328B3E92BE59B3A005E1DFE /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		032E3B2E2BD9BEF40084FF4C /* SelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionManager.swift; sourceTree = "<group>"; };
 		032E3B302BD9BFEE0084FF4C /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		0375885E2BD0793300F110BF /* Submission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submission.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				03C223C62BC5FACA00023D24 /* EditCourseView.swift */,
 				03C223C82BC6597C00023D24 /* AssignmentDetailView.swift */,
 				0328B3E52BE55342005E1DFE /* WebView.swift */,
+				0328B3E92BE59B3A005E1DFE /* PreferencesView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -403,6 +406,7 @@
 				03C607522BE2C24600A94EF0 /* Button.Default.swift in Sources */,
 				031B79802BBDF7FF0038299B /* Quiz.swift in Sources */,
 				032E3B2F2BD9BEF40084FF4C /* SelectionManager.swift in Sources */,
+				0328B3EA2BE59B3A005E1DFE /* PreferencesView.swift in Sources */,
 				03C607532BE2C24600A94EF0 /* Button.Icon.swift in Sources */,
 				03C6075B2BE2C24600A94EF0 /* MonthLabel.Uppercased.swift in Sources */,
 				0328B3E42BE53A79005E1DFE /* DayView.Assignments.swift in Sources */,

@@ -35,24 +35,16 @@ struct ContentView: View {
                     
                 }
             }
-            
-            //            CoursesView(viewModel: viewModel)
-            //                .frame(minWidth: 50, maxWidth: .infinity, maxHeight: .infinity)
-            //                .cornerRadius(8)
-            //                //.border(Color.gray)
-            //                .padding()
-            //            .padding()
+
             CalendarView(viewModel: appController.viewModel,
                          dataModel: dataModel,
                          selectionManager: appController.selectionManager)
             .frame(minWidth: 200, maxWidth: .infinity, minHeight: 200, maxHeight: .infinity)
             .cornerRadius(8)
             
-            //TODO: inspector with options for today assignments, assignment inspector, new event
             TodayAssignmentView(appController: appController)
                 .frame(minWidth: 50, maxWidth: .infinity, maxHeight: .infinity)
                 .cornerRadius(8)
-            //.border(Color.gray)
                 .padding()
             
         }

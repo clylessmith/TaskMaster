@@ -31,7 +31,7 @@ class TaskMasterDataModel {
     
     private var testToken = ProcessInfo.processInfo.environment["CANVAS_TOKEN"] ?? ""
     private var apiURL: String = "https://canvas.instructure.com/api/v1/"
-    private var dateFormat: String = "MMMM.dd.yyyy"
+    private var dateFormat: String = "MMMM d yyyy"
     
     @Transient
     var selectedCourse:Course? = nil
@@ -62,7 +62,7 @@ class TaskMasterDataModel {
         modelContext = ModelContext(sharedModelContainer)
         
         let localDateFormatter = DateFormatter()
-        let localDateFormat = "MMMM.dd.yyyy"
+        let localDateFormat = "MMMM d yyyy"
         localDateFormatter.dateFormat = localDateFormat
         
         date = localDateFormatter.string(from: Date())
@@ -197,19 +197,14 @@ class TaskMasterDataModel {
         
         }
         
-        print("NEW DATE \(date)")
-        print("TODAYS ASSIGNMENTS - updateTodayAssign()")
-        for course in todayAssign.keys {
-            for assign in todayAssign[course] ?? [] {
-                print("TODAY: \(String(describing: assign.assignName))")
-            }
-        }
-        //        print("TODAY ASSIGN BY DATE")
-        //        if let selectedDate {
-        //            for assign in assignmentByDate[selectedDate] ?? [] {
-        //                print("\(selectedDate) \(String(describing: assign.assignName))")
-        //            }
-        //        }
+//        print("NEW DATE \(date)")
+//        print("TODAYS ASSIGNMENTS - updateTodayAssign()")
+//        for course in todayAssign.keys {
+//            for assign in todayAssign[course] ?? [] {
+//                print("TODAY: \(String(describing: assign.assignName))")
+//            }
+//        }
+
         
     }
     
@@ -314,5 +309,21 @@ class TaskMasterDataModel {
             }
         }
         
+    }
+    
+    func clearData() {
+        do {
+            for course in courses {
+                for assign in assignments[course.id] ?? [] {
+                    modelContext.delete(assign)
+                }
+                modelContext.delete(course)
+            }
+//            courses = []
+//            assignments = [ : ]
+//            todayAssign = [ : ]
+//            assignmentByDate = [ : ]
+            
+        }
     }
 }

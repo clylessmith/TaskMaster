@@ -35,6 +35,7 @@ struct CourseDetailView: View {
                     .padding()
                     Button {
                         selectionManager.selectedCourse = nil
+                        selectionManager.selectedAssignID = nil
                     } label: {
                         Image(systemName: "xmark")
                     }

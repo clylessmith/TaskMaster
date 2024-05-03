@@ -106,6 +106,6 @@ final class Assignment: Identifiable, Decodable, Equatable, Hashable {
         case url = "html_url"
         case pointsPossible = "points_possible"
         case urgency
-        case isComplete = "is_complete"
+        case isComplete = "has_submitted_submissions"
     }
 }
