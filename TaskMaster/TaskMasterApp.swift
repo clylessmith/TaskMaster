@@ -9,13 +9,13 @@ import SwiftUI
 
 @main
 struct TaskMasterApp: App {
-    @State var viewModel = TaskMasterViewModel()
+    @State var appController = AppController()
 
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(viewModel)
+                .environment(appController)
                 
         }
     }

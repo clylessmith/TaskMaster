@@ -6,123 +6,106 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Assignment: Identifiable {
-
+@Model
+final class Assignment: Identifiable, Decodable, Equatable, Hashable {
+    
     // MARK: GET /api/v1/courses/:course_id/assignments
     
-    let id = Assignment.ID()
-    
-    var assignID: Int
-    
+    // MARK: Properties
+    var id: UUID
+    var assignId: Int
     var assignName: String?
-    
-    var description: String?
-    
+    var desc: String?
     var dueDate: Date?
-    
-    let dateFormatter = DateFormatter()
-    
-    // MARK: source - https://www.agnosticdev.com/content/how-convert-swift-dates-timezone
-    private var dateFormat = "YYYY-MM-dd'T'HH:mm:ss'Z'"
-    // 2024-02-03T06:59:59Z
-    let timezoneOffset =  TimeZone.current.secondsFromGMT()
-    private var timeFormat = "HH:mm:ss"
-    
-    var timeDue: String
-    
+    var timeDue: String?
     var courseID: Int
-    
-    var assignURLString: String?
-    
     var assignURL: URL?
-        
     var pointsPossible: Float?
-    
-    var urgency: Urgency?
-    
+    //var urgency: Urgency?
     var isComplete: Bool?
     
-    init(assignID: Int, name: String? = nil, description: String? = nil, dueDate: Date? = nil, courseID: Int, assignURL: String? = nil, pointsPossible: Float? = nil, timeDue: String) {
-        self.assignID = assignID
+    // MARK: Computed properties for URL and date adjustments
+    var adjustedURL: URL? {
+        guard let token = ProcessInfo.processInfo.environment["CANVAS_TOKEN"], !token.isEmpty else {
+            return assignURL
+        }
+        return assignURL?.appendingPathComponent("?access_token=\(token)")
+    }
+    
+    // MARK: Initializers
+    init(assignId: Int, name: String?, description: String?, dueDate: Date?, courseID: Int, urlString: String?, pointsPossible: Float?, isComplete: Bool) {
+        self.id = UUID()
+        self.assignId = assignId
         self.assignName = name
-        self.description = description
+        self.desc = description
         self.dueDate = dueDate
         self.courseID = courseID
-        self.assignURLString = assignURL
-        self.assignURL = URL(string: assignURL ?? "")
+        self.assignURL = URL(string: urlString ?? "")
         self.pointsPossible = pointsPossible
-        self.urgency = nil
-        self.timeDue = timeDue
-        self.isComplete = false
+        //self.urgency = urgency
+        self.isComplete = isComplete
+        
+        if let dueDate = dueDate {
+            self.timeDue = Assignment.formatTime(from: dueDate)
+        }
     }
     
-    struct ID: Identifiable, Hashable {
-        var id = UUID()
-    }
-    
-    enum Urgency {
-        case urgent
-        case medium
-        case low
-    }
-}
-
-extension Assignment: Decodable {
-    init(from decoder: any Decoder) throws {
+    // MARK: Decoding
+    required init(from decoder: Decoder) throws {
+        self.id = UUID()
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.assignID = try values.decode(Int.self, forKey: .assignId)
-        self.assignName = try values.decodeIfPresent(String.self, forKey: .assignName)
-        self.description = try values.decodeIfPresent(String.self, forKey: .description)
-//        if let desc = self.description {
-//            self.description = desc.
-//        }
-        
-        let dateString = try values.decodeIfPresent(String.self, forKey: .dueDate) ?? nil
-        //print("Assign: \(self.assignName ?? ""), due date: \(dateString ?? "")")
-        dateFormatter.dateFormat = dateFormat
-        dateFormatter.timeZone = .current
-        self.dueDate = dateFormatter.date(from: dateString ?? "")
-        if let due = self.dueDate {
-            self.dueDate = due + Double(timezoneOffset)
-        }
-        
-        dateFormatter.dateFormat = timeFormat
-        if let dateDue = self.dueDate {
-            self.timeDue = dateFormatter.string(from: dateDue)
-        } else {
-            self.timeDue = ""
-        }
-        
-        self.courseID = try values.decode(Int.self, forKey: .courseID)
-        self.assignURLString = try values.decodeIfPresent(String.self, forKey: .assignURL)
-        self.assignURL = URL(string: self.assignURLString ?? "")
-        self.pointsPossible = try values.decodeIfPresent(Float.self, forKey: .pointsPossible)
-        self.urgency = nil
-        self.isComplete = try values.decodeIfPresent(Bool.self, forKey: .submitted) ?? false
+        assignId = try values.decode(Int.self, forKey: .id)
+        assignName = try values.decodeIfPresent(String.self, forKey: .name)
+        desc = try values.decodeIfPresent(String.self, forKey: .description)
+        let dateString = try values.decodeIfPresent(String.self, forKey: .dueDate)
+        dueDate = Assignment.dateFormatter.date(from: dateString ?? "")
+        courseID = try values.decode(Int.self, forKey: .courseID)
+        let urlString = try values.decodeIfPresent(String.self, forKey: .url)
+        assignURL = URL(string: urlString ?? "")
+        pointsPossible = try values.decodeIfPresent(Float.self, forKey: .pointsPossible)
+        //urgency = try values.decodeIfPresent(Urgency.self, forKey: .urgency)
+        isComplete = try values.decodeIfPresent(Bool.self, forKey: .isComplete) ?? false
+        timeDue = dueDate.map { Assignment.formatTime(from: $0) }
     }
+    
+    // MARK: Equatable and Hashable
+    static func == (lhs: Assignment, rhs: Assignment) -> Bool {
+        return lhs.assignId == rhs.assignId
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    // MARK: Private Helpers
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYY-MM-dd'T'HH:mm:ss'Z'"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return formatter
+    }()
+    
+    private static func formatTime(from date: Date) -> String {
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm:ss"
+        return timeFormatter.string(from: date)
+    }
+    
+//    struct ID: Identifiable, Hashable {
+//        var id = UUID()
+//    }
     
     enum CodingKeys: String, CodingKey {
-        case assignId = "id"
-        case assignName = "name"
+        case id
+        case name
         case description
         case dueDate = "due_at"
         case courseID = "course_id"
-        case assignURL = "html_url"
+        case url = "html_url"
         case pointsPossible = "points_possible"
-        case submitted = "has_submitted_submissions"
+        case urgency
+        case isComplete = "is_complete"
     }
 }
-
-extension Assignment: Equatable {
-    static func == (lhs: Assignment, rhs: Assignment) -> Bool {
-        return lhs.assignID == rhs.assignID
-    }
-}
-
-extension Assignment: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
-    }
-}
-

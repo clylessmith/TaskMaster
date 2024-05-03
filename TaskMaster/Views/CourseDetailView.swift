@@ -6,26 +6,26 @@
 //
 
 import SwiftUI
+import WebKit
 
 struct CourseDetailView: View {
     @State var viewModel: TaskMasterViewModel
-    @Binding var course:Course?
+    @State var dataModel: TaskMasterDataModel
+    
+    @Bindable var selectionManager: SelectionManager
+    
     @State var showEdit:Bool = false
     @State var selectedAssignment: Assignment?
 
     var body: some View {
         VStack {
             if let _ = selectedAssignment {
-                AssignmentDetailView(viewModel: viewModel, assignment: $selectedAssignment)
+                AssignmentDetailView(dataModel: dataModel,
+                                     assignment: $selectedAssignment)
             } else {
                 HStack(alignment: .top) {
-                    Button {
-                        course = nil
-                    } label: {
-                        Image(systemName: "chevron.left")
-                    }
-                    .frame(alignment: .leading)
-                    Text((viewModel.courses.first(where: {$0.id == course?.id}) ?? nil)?.courseName ?? "Current course")
+                    Text(selectionManager.selectedCourse?.courseName ?? "Current course")
+                    Spacer()
                     Button {
                         showEdit = !showEdit
                     } label: {
@@ -33,31 +33,45 @@ struct CourseDetailView: View {
                     }
                     .frame(alignment: .trailing)
                     .padding()
+                    Button {
+                        selectionManager.selectedCourse = nil
+                    } label: {
+                        Image(systemName: "xmark")
+                    }
+                    .frame(alignment: .trailing)
+                    .padding()
                 }
                 .padding()
+                .background(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)).fill(Color.gray))
                 
                 if showEdit {
-                    if let _ = course {
-                        EditCourseView(viewModel: viewModel, course: course)
+                    if let _ = selectionManager.selectedCourse {
+                        EditCourseView(viewModel: viewModel, 
+                                       dataModel: dataModel,
+                                       course: selectionManager.selectedCourse)
                     }
                 }
                 
-                if let existCourse = course {
-                    if let assignments = viewModel.assignments[existCourse.id] {
+                if let existCourse = selectionManager.selectedCourse {
+                    if let assignments = dataModel.assignments[existCourse.id] {
                         List(assignments,id: \.self ,selection: $selectedAssignment) { assign in
-                            Text("\(assign.assignName ?? "no name")")
-                                .strikethrough(assign.isComplete ?? false)
-                            if let dueDate = assign.dueDate {
-                                Text("DUE \(viewModel.dateFormatter.string(from: dueDate))")
-                                    .padding(.leading)
+                            Group {
+                                Text("\(assign.assignName ?? "no name")")
                                     .strikethrough(assign.isComplete ?? false)
+                                if let dueDate = assign.dueDate {
+                                    Text("DUE \(dataModel.dateFormatter.string(from: dueDate))")
+                                        .padding(.leading)
+                                        .strikethrough(assign.isComplete ?? false)
+                                }
+                                else {
+                                    Text("NO DUE DATE")
+                                        .padding(.leading)
+                                        .strikethrough(assign.isComplete ?? false)
+                                }
                             }
-                            else {
-                                Text("NO DUE DATE")
-                                    .padding(.leading)
-                                    .strikethrough(assign.isComplete ?? false)
+                            .onTapGesture {
+                                dataModel.markComplete(assign: assign)
                             }
-                            
                         }
                     } else {
                         List() {

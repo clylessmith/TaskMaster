@@ -9,11 +9,12 @@ import SwiftUI
 
 struct EditCourseView: View {
     var viewModel: TaskMasterViewModel
+    var dataModel: TaskMasterDataModel
     var course: Course?
     
     var body: some View {
-        Button("\((viewModel.courses.first(where: {$0.id == course?.id}) ?? nil)?.hidden ?? false ? "Show" : "Hide") course") {
-            viewModel.updateCourseHidden(course: course)
+        Button("\((dataModel.courses.first(where: {$0.id == course?.id}) ?? nil)?.hidden ?? false ? "Show" : "Hide") course") {
+            dataModel.updateCourseHidden(course: course)
         }
     }
 }

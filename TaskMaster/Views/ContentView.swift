@@ -8,48 +8,59 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(TaskMasterViewModel.self) private var viewModel
+    //    @Environment(TaskMasterViewModel.self) private var viewModel
+    //    @State var selectedCourse: Course?
+    
+    @Environment(AppController.self) private var appController: AppController
+    
+    @State private var visibility_CourseDetail: NavigationSplitViewVisibility = .all
     
     var body: some View {
+        @Bindable var viewModel = appController.viewModel
+        @Bindable var dataModel = appController.dataModel
+        
         HStack {
-            VStack {
-                HStack {
-                    Image(systemName: "person.crop.circle")
-                    Text("Username")
-                    Spacer()
+            NavigationSplitView(columnVisibility: $visibility_CourseDetail) {
+                if (!dataModel.courses.isEmpty) {
+                    CoursesView(viewModel: viewModel,
+                                dataModel: dataModel,
+                                selectionManager: appController.selectionManager)
                 }
-                .frame(alignment: .leading)
+            } detail: {
+                if appController.selectionManager.selectedCourse != nil {
+                    CourseDetailView(viewModel: viewModel,
+                                     dataModel: dataModel,
+                                     selectionManager: appController.selectionManager)
+                    .frame(minWidth: 200)
+                    
+                }
+            }
+            
+            //            CoursesView(viewModel: viewModel)
+            //                .frame(minWidth: 50, maxWidth: .infinity, maxHeight: .infinity)
+            //                .cornerRadius(8)
+            //                //.border(Color.gray)
+            //                .padding()
+            //            .padding()
+            CalendarView(viewModel: appController.viewModel,
+                         dataModel: dataModel,
+                         selectionManager: appController.selectionManager)
+            .frame(minWidth: 200, maxWidth: .infinity, minHeight: 200, maxHeight: .infinity)
+            .cornerRadius(8)
+            
+            //TODO: inspector with options for today assignments, assignment inspector, new event
+            TodayAssignmentView(appController: appController)
+                .frame(minWidth: 50, maxWidth: .infinity, maxHeight: .infinity)
+                .cornerRadius(8)
+            //.border(Color.gray)
                 .padding()
             
-                CoursesView(viewModel: viewModel)
-                    .frame(minWidth: 50, maxWidth: .infinity, maxHeight: .infinity)
-                    .cornerRadius(8)
-                    //.border(Color.gray)
-                    .padding()
-            }
-            .padding()
-            CalendarView()
-                .frame(minWidth: 200, maxWidth: .infinity, minHeight: 200, maxHeight: .infinity)
-                .cornerRadius(8)
-            VStack {
-                
-                TodayAssignmentView(viewModel: viewModel)
-                    .frame(minWidth: 50, maxWidth: .infinity, maxHeight: .infinity)
-                    .cornerRadius(8)
-                
-                    //.border(Color.gray)
-                    .padding()
-                
-                
-//                Text("Manual task")
-//                    .padding()
-            }
         }
         .toolbar() {
             ToolbarItem {
                 Button {
                     Task {
-                        try? await viewModel.update()
+                        try? await dataModel.update()
                     }
                 } label: {
                     Image(systemName: "arrow.clockwise")
